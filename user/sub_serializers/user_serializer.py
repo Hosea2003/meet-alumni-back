@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     contact = serializers.CharField(required=True)
 
-    isAdmin = serializers.BooleanField(read_only=True)
+    isAdminCollege = serializers.BooleanField(read_only=True)
 
     profile_picture = serializers.ImageField(read_only=True)
 
