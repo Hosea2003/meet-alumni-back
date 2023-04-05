@@ -24,11 +24,17 @@ class UserSerializer(serializers.ModelSerializer):
 
     isAdminCollege = serializers.BooleanField(read_only=True)
 
-    profile_picture = serializers.ImageField(read_only=True)
+    profile_picture = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = "__all__"
+
+    def get_profile_picture(self, user):
+        pf = user.profile_picture
+        if pf:
+            return pf.url
+        return "/media/pf/user.png"
 
 
 class ProfilePictureSerializer(serializers.ModelSerializer):

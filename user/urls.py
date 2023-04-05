@@ -11,5 +11,7 @@ urlpatterns=[
     path('colleges', cv.list_colleges),
     path('send-request/<int:pk>', cv.send_request_to_college),
     path('request-college', cv.list_request),
-    path('action-request/<int:pk>', cv.take_action_to_request)
+    path('action-request/<int:pk>', cv.take_action_to_request),
+    path('college/<int:pk>', cv.college_detail),
+    path('enrolled-colleges', cv.enrolled_college)
 ]

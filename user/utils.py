@@ -6,5 +6,5 @@ def getFromModel(model: models.Model, pk):
     try:
         model = model.objects.get(id=pk)
         return model
-    except models.Model.DoesNotExist:
+    except models.ObjectDoesNotExist:
         raise Http404("College not found")

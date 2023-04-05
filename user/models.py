@@ -67,6 +67,8 @@ class User(AbstractUser):
     @property
     def profile_picture(self):
         pf = self.profile_pictures.filter(isCurrent=True)
+        if not pf.first():
+            return None
         return pf.first().image_url
 
     def save(self, *args, **kwargs):
