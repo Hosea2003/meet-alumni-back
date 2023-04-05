@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ModMessageConfig(AppConfig):
+class PeopleConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mod_message'
+    name = 'people'

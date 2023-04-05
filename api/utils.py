@@ -10,7 +10,7 @@ class CustomPagination(PageNumberPagination):
 def paginate(query_set, request, Serializer):
     paginator=CustomPagination()
     pagined_queryset= paginator.paginate_queryset(query_set, request)
-    serializer=Serializer(pagined_queryset, many=True)
+    serializer=Serializer(pagined_queryset, many=True, context={"request":request})
 
     return {
         'count': paginator.page.paginator.count,
