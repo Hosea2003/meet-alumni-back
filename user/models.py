@@ -6,6 +6,8 @@ from datetime import date
 from django.utils import timezone
 from uuid import uuid4
 
+from user.utils import upload_to
+
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -71,21 +73,19 @@ class User(AbstractUser):
             return None
         return pf.first().image_url
 
+    @property
+    def pdp_link(self):
+        if self.profile_picture:
+            return self.profile_picture.url
+        return "/media/pf/user.png"
+
+    @property
+    def name(self):
+        return self.first_name+" "+self.last_name
     def save(self, *args, **kwargs):
         if not self.pk:
             self.set_password(self.password)
         super().save(*args, **kwargs)
-
-
-def upload_to(path):
-    def wrapper(instance, filename: str):
-        ext = filename.split(".")[-1]
-
-        #         set the filename as a random string
-        filename = '{}.{}'.format(uuid4().hex, ext)
-        return os.path.join(path, filename)
-
-    return wrapper
 
 
 def upload_pdp(instance, filename):
@@ -128,6 +128,7 @@ class CollegeUser(models.Model):
     isAlumni = models.BooleanField(default=False)
     isConfirmed = models.BooleanField(default=False)
     dateRequested = models.DateTimeField(default=timezone.now)
+    dateJoin = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "%s request to be %s to %s" % (

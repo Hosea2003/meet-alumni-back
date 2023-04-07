@@ -11,15 +11,27 @@ from user.utils import getFromModel
 from rest_framework import status
 
 
+def getFriends(pk):
+    user = getFromModel(User, pk)
+    friends = Friend.objects.filter(user1=user).values("user2")
+    friends = User.objects.filter(id__in=friends)
+
+    return friends
+
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def get_friends(request: Request):
-    user = request.user
-    friends = Friend.objects.filter(user1=user).values("user2")
-    friends= User.objects.filter(id__in=friends)
-
+def get_friends(request: Request, pk=None):
+    if not pk: pk = request.user.id
+    friends = getFriends(pk)
     paginated = paginate(friends, request, PublicUserSerializer)
     return Response(paginated)
+
+
+# @api_view(["GET"])
+# @permission_classes([IsAuthenticated])
+# def get_my_friends(request:Request):
+#     return get_friends(request, request.user.id)
 
 
 @api_view(["GET"])
@@ -59,7 +71,7 @@ def send_request(request: Request, pk):
         friend=other_user
     )
 
-    return Response(PublicUserSerializer(other_user, context={"request":request}).data, status=status.HTTP_200_OK)
+    return Response(PublicUserSerializer(other_user, context={"request": request}).data, status=status.HTTP_200_OK)
 
 
 @api_view(["PATCH"])
@@ -72,7 +84,7 @@ def accept_friend(request, pk):
     if not request_to_me:
         return Response("This person didn't send you a request", status=status.HTTP_400_BAD_REQUEST)
 
-#     create 2 Friend objects (me as user1 and as user2)
+    #     create 2 Friend objects (me as user1 and as user2)
     Friend.objects.create(
         user1=user,
         user2=sender
@@ -83,10 +95,10 @@ def accept_friend(request, pk):
         user2=user
     )
 
-#     delete the request
+    #     delete the request
     request_to_me.delete()
 
-    return Response(PublicUserSerializer(sender, context={"request":request}).data, status=status.HTTP_200_OK)
+    return Response(PublicUserSerializer(sender, context={"request": request}).data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
