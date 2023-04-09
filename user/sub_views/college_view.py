@@ -7,7 +7,7 @@ from api.utils import paginate
 from ..models import College, CollegeUser, User
 from ..permissions import IsCollegeAdmin
 from ..sub_serializers.user_serializer import UserSerializer
-from ..sub_serializers.college_serializer import CollegeSerializer, CollegeUserSerializer
+from ..sub_serializers.college_serializer import CollegeSerializer, CollegeUserSerializer, OtherCollegeSerializer
 from rest_framework.request import Request
 from rest_framework.permissions import IsAuthenticated
 from ..utils import getFromModel
@@ -25,12 +25,37 @@ def list_colleges(request: Request):
 
     return Response(CollegeSerializer(colleges, many=True).data)
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def other_colleges(request:Request):
+    user=request.user
+    my_colleges= CollegeUser.objects.filter(user=user, isConfirmed=True).values("college")
+
+
+    colleges=College.objects.exclude(id__in=my_colleges)
+
+
+    other =[]
+
+    for college in colleges:
+        other.append({
+            "college":college,
+            "requestSent":CollegeUser.objects.filter(college=college, user=user).count()>0
+        })
+
+
+    paginated = paginate(other, request, OtherCollegeSerializer)
+
+    return Response(paginated)
+
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def send_request_to_college(request: Request, pk):
     # get the primary key in the url
     college = getFromModel(College, pk)
+
+    print(request.data)
 
     user = request.user
 

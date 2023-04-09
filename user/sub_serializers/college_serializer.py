@@ -43,3 +43,8 @@ class CollegeUserSerializer(serializers.ModelSerializer):
         if pf:
             return pf
         return "/media/pf/user.png"
+
+
+class OtherCollegeSerializer(serializers.Serializer):
+    college=CollegeSerializer()
+    requestSent=serializers.BooleanField()

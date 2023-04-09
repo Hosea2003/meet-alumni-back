@@ -15,6 +15,7 @@ urlpatterns=[
     path('action-request/<int:pk>', cv.take_action_to_request),
     path('college/<int:pk>', cv.college_detail),
     path('enrolled-colleges', cv.enrolled_college),
+    path('other-colleges', cv.other_colleges),
 
     path('about/<int:pk>', uv.about),
     path('album/<int:pk>', uv.album),
