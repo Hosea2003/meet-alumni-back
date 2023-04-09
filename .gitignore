@@ -1,3 +1,5 @@
-media
+media/pf/*
+media/publication/*
+!media/pf/user.png
 
 .env
