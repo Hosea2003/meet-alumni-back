@@ -49,11 +49,6 @@ Configure the .env file according to your environment. Set the SECRET_KEY and th
 
 To migrate the database, run the command
 ```bash
-  python manage.py makemigrations user
-  python manage.py makemigrations people
-  python manage.py makemigrations publication
-  python manage.py makemigrations api
-  python manage.py makemigrations message
   python manage.py migrate
 ```
 ## Run Locally
@@ -61,6 +56,6 @@ To migrate the database, run the command
 Start the server
 
 ```bash
-  python manage.py startserver
+  python manage.py runserver
 ```
 
