@@ -5,6 +5,8 @@ MeetAlumni is a platform to let students connect with their senior.
 
 
 ## Requirements
+You should have a MySQL server installed, you can use XAMPP or WAMPP.
+
 You should have python 3.9 or higher, I recommend the latest stable version of python and use a virtualenv.
 
 To install the latest version of python, check the website bellow: https://www.python.org/downloads/
