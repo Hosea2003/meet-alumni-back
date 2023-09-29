@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     isAdminCollege = serializers.BooleanField(read_only=True)
 
-    profile_picture = serializers.SerializerMethodField()
+    profile_picture = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User

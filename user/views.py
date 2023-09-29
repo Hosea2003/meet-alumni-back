@@ -28,8 +28,6 @@ def checkEmail(request:Request):
 def register(request):
     college_data = None
 
-    print(request.data)
-
     if request.data.get("college"):
         college_data: dict = request.data.pop("college")
 
@@ -60,8 +58,6 @@ def register(request):
 
     # if it provides an id, test if it exists
     college_id = college_data.get("id")
-
-    print(college_id)
 
     if college_id:
         college = College.objects.filter(id=college_id).first()
